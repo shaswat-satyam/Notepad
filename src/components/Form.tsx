@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { Note } from "../../type";
+type Props = {
+  setFormVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+  setNotes: React.Dispatch<React.SetStateAction<Array<Note>>>;
+  notes: Array<Note>;
+};
 
-export default function Form({ setFormVisbility, setNotes, notes }) {
+export default function Form({ setFormVisibility, setNotes, notes }: Props) {
   const [title, setTitle] = useState("");
   const [tagline, setTagLine] = useState("");
   const [body, setBody] = useState("");
@@ -12,7 +18,7 @@ export default function Form({ setFormVisbility, setNotes, notes }) {
         <button
           type="button"
           className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-          onClick={() => setFormVisbility(false)}
+          onClick={() => setFormVisibility(false)}
         >
           <span className="sr-only">Close menu</span>
           <svg
@@ -91,7 +97,7 @@ export default function Form({ setFormVisbility, setNotes, notes }) {
         type="submit"
         onClick={(e) => {
           e.preventDefault();
-          setFormVisbility(false);
+          setFormVisibility(false);
           console.log(body);
           setNotes([
             ...notes,
@@ -100,7 +106,7 @@ export default function Form({ setFormVisbility, setNotes, notes }) {
               tagline: tagline,
               body: body,
               isPinned: isPinned,
-              updatedAt: Date(),
+              updatedAt: string(Date()),
             },
           ]);
         }}

@@ -1,4 +1,9 @@
-export default function Heading({ setFormVisbility }) {
+import { Dispatch } from "react";
+
+type Props = {
+  setFormVisibility: Dispatch<React.SetStateAction<boolean>>;
+};
+export default function Heading({ setFormVisibility }: Props) {
   return (
     <header
       id="main-header"
@@ -57,7 +62,7 @@ export default function Heading({ setFormVisbility }) {
               <li>
                 <button
                   className="block py-2 md:py-0 hover:text-gray-300 transition duration-200"
-                  onClick={() => setFormVisbility(true)}
+                  onClick={() => setFormVisibility(true)}
                 >
                   New Note
                 </button>

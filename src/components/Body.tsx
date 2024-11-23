@@ -1,15 +1,23 @@
 import Form from "./Form.tsx";
 import NoteComponent from "./NoteComponent.tsx";
-import { useState } from "react";
 
-export default function Body({ formVisible, setFormVisbility }) {
-  let [Notes, setNotes] = useState([]);
+import { Note } from "../../type.ts";
+
+import { Dispatch, useState } from "react";
+
+type Props = {
+  formVisible: boolean;
+  setFormVisibility: Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function Body({ formVisible, setFormVisibility }: Props) {
+  const [Notes, setNotes] = useState<Array<Note>>([]);
   return (
     <div className="pt-20 px-16">
       <h1 className="text-4xl font-bold">My Notes</h1>
       <div className="grid">
         {Notes.length > 0 ? (
-          Notes.map((note) => (
+          Notes.map((note: Note) => (
             <NoteComponent
               title={note.title}
               tagline={note.tagline}
@@ -24,7 +32,7 @@ export default function Body({ formVisible, setFormVisbility }) {
       </div>
       {formVisible ? (
         <Form
-          setFormVisbility={setFormVisbility}
+          setFormVisibility={setFormVisibility}
           setNotes={setNotes}
           notes={Notes}
         />
