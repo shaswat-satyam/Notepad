@@ -7,11 +7,11 @@ function App() {
   return (
     <>
       <div className="h-content ">
-        <Heading
-          setFormVisbility={setFormVisibility}
+        <Heading setFormVisbility={setFormVisibility} />
+        <Body
           formVisible={isFormVisible}
+          setFormVisbility={setFormVisibility}
         />
-        <Body formVisible={isFormVisible} />
       </div>
     </>
   );

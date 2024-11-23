@@ -1,4 +1,4 @@
-export default function Heading({ setFormVisbility, formVisible }) {
+export default function Heading({ setFormVisbility }) {
   return (
     <header
       id="main-header"
@@ -57,7 +57,7 @@ export default function Heading({ setFormVisbility, formVisible }) {
               <li>
                 <button
                   className="block py-2 md:py-0 hover:text-gray-300 transition duration-200"
-                  onClick={() => setFormVisbility(!formVisible)}
+                  onClick={() => setFormVisbility(true)}
                 >
                   New Note
                 </button>
