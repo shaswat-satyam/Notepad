@@ -1,4 +1,9 @@
-export default function Form({ setFormVisbility }) {
+import { useState } from "react";
+
+export default function Form({ setFormVisbility, setNotes, notes }) {
+  const [title, setTitle] = useState("");
+  const [tagline, setTagLine] = useState("");
+  const [content, setContent] = useState("");
   return (
     <form className="max-w-md mx-auto mt-20 p-6 bg-white border rounded-lg shadow-lg">
       <div className="flex align-middle justify-between mb-6">
@@ -31,10 +36,11 @@ export default function Form({ setFormVisbility }) {
           Title:
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline required:"
           id="title"
           type="text"
           placeholder="Enter the title"
+          required
         />
       </div>
       <div className="mb-4">
@@ -46,6 +52,7 @@ export default function Form({ setFormVisbility }) {
           id="tagline"
           type="text"
           placeholder="Enter the tagline"
+          required
         />
       </div>
       <div className="mb-4">
@@ -57,11 +64,17 @@ export default function Form({ setFormVisbility }) {
           id="body"
           rows={5}
           placeholder="Enter the body"
+          required
         ></textarea>
       </div>
       <button
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         type="submit"
+        onClick={(e) => {
+          e.preventDefault();
+          setFormVisbility(false);
+          setNotes([...notes, { title: e.target }]);
+        }}
       >
         Submit
       </button>
