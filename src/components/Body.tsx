@@ -3,7 +3,7 @@ import NoteComponent from "./NoteComponent.tsx";
 import { useState } from "react";
 
 export default function Body({ formVisible, setFormVisbility }) {
-  let [Notes, setNotes] = useState([{}]);
+  let [Notes, setNotes] = useState([]);
   return (
     <div className="pt-20 px-16">
       <h1 className="text-4xl font-bold">My Notes</h1>
@@ -13,7 +13,7 @@ export default function Body({ formVisible, setFormVisbility }) {
             <NoteComponent
               title={note.title}
               tagline={note.tagline}
-              body={Notes.body}
+              body={note.body}
             />
           ))
         ) : (

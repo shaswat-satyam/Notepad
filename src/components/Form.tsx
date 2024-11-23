@@ -3,7 +3,7 @@ import { useState } from "react";
 export default function Form({ setFormVisbility, setNotes, notes }) {
   const [title, setTitle] = useState("");
   const [tagline, setTagLine] = useState("");
-  const [content, setContent] = useState("");
+  const [body, setBody] = useState("");
   return (
     <form className="max-w-md mx-auto mt-20 p-6 bg-white border rounded-lg shadow-lg">
       <div className="flex align-middle justify-between mb-6">
@@ -40,7 +40,8 @@ export default function Form({ setFormVisbility, setNotes, notes }) {
           id="title"
           type="text"
           placeholder="Enter the title"
-          required
+          required={true}
+          onChange={(e) => setTitle(e.target.value)}
         />
       </div>
       <div className="mb-4">
@@ -53,6 +54,7 @@ export default function Form({ setFormVisbility, setNotes, notes }) {
           type="text"
           placeholder="Enter the tagline"
           required
+          onChange={(e) => setTagLine(e.target.value)}
         />
       </div>
       <div className="mb-4">
@@ -64,7 +66,8 @@ export default function Form({ setFormVisbility, setNotes, notes }) {
           id="body"
           rows={5}
           placeholder="Enter the body"
-          required
+          required={true}
+          onChange={(e) => setBody(e.target.value)}
         ></textarea>
       </div>
       <button
@@ -73,7 +76,8 @@ export default function Form({ setFormVisbility, setNotes, notes }) {
         onClick={(e) => {
           e.preventDefault();
           setFormVisbility(false);
-          setNotes([...notes, { title: e.target }]);
+          console.log(body);
+          setNotes([...notes, { title: title, tagline: tagline, body: body }]);
         }}
       >
         Submit
