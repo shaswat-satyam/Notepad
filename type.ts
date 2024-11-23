@@ -3,5 +3,6 @@ export type Note = {
   tagline: string;
   body: string;
   isPinned: boolean;
-  updatedAt: Date;
+  updatedAt: EpochTimeStamp;
+  createdAt: EpochTimeStamp;
 };

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Note } from "../../type";
+
 type Props = {
   setFormVisibility: React.Dispatch<React.SetStateAction<boolean>>;
   setNotes: React.Dispatch<React.SetStateAction<Array<Note>>>;
@@ -98,7 +99,6 @@ export default function Form({ setFormVisibility, setNotes, notes }: Props) {
         onClick={(e) => {
           e.preventDefault();
           setFormVisibility(false);
-          console.log(body);
           setNotes([
             ...notes,
             {
@@ -106,7 +106,7 @@ export default function Form({ setFormVisibility, setNotes, notes }: Props) {
               tagline: tagline,
               body: body,
               isPinned: isPinned,
-              updatedAt: string(Date()),
+              updatedAt: Date.now(),
             },
           ]);
         }}
