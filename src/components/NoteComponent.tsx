@@ -6,6 +6,7 @@ export default function NoteComponent({
   tagline,
   isPinned,
   updatedAt,
+  createdAt,
 }: Note) {
   return (
     <div>
@@ -25,11 +26,11 @@ export default function NoteComponent({
             <></>
           )}
         </div>
-        <div className="flex ">
-          <h4>{tagline}</h4>
+        <div className="flex justify-between gap-5 text-gray-500">
+          {tagline ? <h4>{tagline}</h4> : <></>}
           <h4>{Date(updatedAt)}</h4>
         </div>
-        <p className="text-gray-700">{body}</p>
+        <p className="">{body}</p>
       </div>
     </div>
   );

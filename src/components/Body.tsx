@@ -4,6 +4,7 @@ import NoteComponent from "./NoteComponent.tsx";
 import { Note } from "../../type.ts";
 
 import { Dispatch, useState } from "react";
+import Pagination from "./Pagination.tsx";
 
 type Props = {
   formVisible: boolean;
@@ -11,41 +12,73 @@ type Props = {
 };
 
 export default function Body({ formVisible, setFormVisibility }: Props) {
-  const [Notes, setNotes] = useState<Array<Note>>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [Notes, setNotes] = useState<Array<Note>>([
+    {
+      title: "Do Laundry",
+      tagline: "",
+      body: "Do laundry before winter",
+      isPinned: false,
+      updatedAt: 0,
+      createdAt: 0,
+    },
+    {
+      title: "Do Laundry",
+      tagline: "",
+      body: "Do laundry before winter",
+      isPinned: false,
+      updatedAt: 0,
+      createdAt: 0,
+    },
+    {
+      title: "Do Laundry",
+      tagline: "",
+      body: "Do laundry before winter",
+      isPinned: false,
+      updatedAt: 0,
+      createdAt: 0,
+    },
+    {
+      title: "Do Laundry",
+      tagline: "",
+      body: "Do laundry before winter",
+      isPinned: false,
+      updatedAt: 0,
+      createdAt: 0,
+    },
+    {
+      title: "Do Laundry",
+      tagline: "",
+      body: "Do laundry before winter",
+      isPinned: false,
+      updatedAt: 0,
+      createdAt: 0,
+    },
+    {
+      title: "Do Laundry",
+      tagline: "",
+      body: "Do laundry before winter",
+      isPinned: false,
+      updatedAt: 0,
+      createdAt: 0,
+    },
+    {
+      title: "Do Laundry",
+      tagline: "",
+      body: "Do laundry before winter",
+      isPinned: false,
+      updatedAt: 0,
+      createdAt: 0,
+    },
+  ]);
+  const currentNotes = Notes.filter((note) => note.isPinned)
+    .sort((note) => note.updatedAt)
+    .concat(
+      Notes.filter((note) => !note.isPinned).sort((note) => note.updatedAt)
+    );
   return (
     <div className="pt-20 px-16">
       <h1 className="text-4xl font-bold">My Notes</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
-        {Notes.length > 0 ? (
-          Notes.filter((note) => note.isPinned)
-            .sort((note) => note.updatedAt)
-            .map((note: Note) => (
-              <NoteComponent
-                title={note.title}
-                tagline={note.tagline}
-                body={note.body}
-                isPinned={note.isPinned}
-                updatedAt={note.updatedAt}
-              />
-            ))
-        ) : (
-          <></>
-        )}
-
-        {Notes.length > 0 ? (
-          Notes.filter((note) => !note.isPinned).map((note: Note) => (
-            <NoteComponent
-              title={note.title}
-              tagline={note.tagline}
-              body={note.body}
-              isPinned={note.isPinned}
-              updatedAt={note.updatedAt}
-            />
-          ))
-        ) : (
-          <h2>No Notes Found</h2>
-        )}
-      </div>
       {formVisible ? (
         <Form
           setFormVisibility={setFormVisibility}
@@ -55,6 +88,36 @@ export default function Body({ formVisible, setFormVisibility }: Props) {
       ) : (
         <div />
       )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+        {Notes.length > 0 ? (
+          currentNotes
+            .slice(6 * currentPage, 6 * (currentPage + 1))
+            .map((note: Note, i) => (
+              <NoteComponent
+                title={note.title}
+                tagline={note.tagline}
+                body={note.body}
+                isPinned={note.isPinned}
+                updatedAt={note.updatedAt}
+                createdAt={note.createdAt}
+                key={note.title + i}
+              />
+            ))
+        ) : (
+          <></>
+        )}
+      </div>
+      <div className="py-5 flex justify-center w-full center">
+        {Notes.length > 6 ? (
+          <Pagination
+            pageCount={Math.ceil(Notes.length / 6)}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }
