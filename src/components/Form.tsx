@@ -4,6 +4,7 @@ export default function Form({ setFormVisbility, setNotes, notes }) {
   const [title, setTitle] = useState("");
   const [tagline, setTagLine] = useState("");
   const [body, setBody] = useState("");
+  const [isPinned, setIsPinned] = useState(false);
   return (
     <form className="max-w-md mx-auto mt-20 p-6 bg-white border rounded-lg shadow-lg">
       <div className="flex align-middle justify-between mb-6">
@@ -44,6 +45,21 @@ export default function Form({ setFormVisbility, setNotes, notes }) {
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
+      <div className="mb-4 flex">
+        <label
+          className="block mt-2  text-gray-700 font-bold mb-2"
+          htmlFor="pin"
+        >
+          Pinned:
+        </label>
+        <input
+          id="pin"
+          type="checkbox"
+          placeholder="Pin the note"
+          className="ml-5"
+          onChange={(e) => setIsPinned(Boolean(e.target.value))}
+        />
+      </div>
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2" htmlFor="tagline">
           Tagline:
@@ -77,7 +93,16 @@ export default function Form({ setFormVisbility, setNotes, notes }) {
           e.preventDefault();
           setFormVisbility(false);
           console.log(body);
-          setNotes([...notes, { title: title, tagline: tagline, body: body }]);
+          setNotes([
+            ...notes,
+            {
+              title: title,
+              tagline: tagline,
+              body: body,
+              isPinned: isPinned,
+              updatedAt: Date(),
+            },
+          ]);
         }}
       >
         Submit

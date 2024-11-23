@@ -14,6 +14,8 @@ export default function Body({ formVisible, setFormVisbility }) {
               title={note.title}
               tagline={note.tagline}
               body={note.body}
+              isPinned={note.isPinned}
+              updatedAt={note.updatedAt}
             />
           ))
         ) : (
