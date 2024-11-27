@@ -17,7 +17,7 @@ const firebaseConfig = {
 function App() {
   useEffect(() => {
     initializeApp(firebaseConfig);
-  }, []);
+  });
   const [isFormVisible, setFormVisibility] = useState<boolean>(false);
   return (
     <>
