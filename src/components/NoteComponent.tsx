@@ -1,5 +1,14 @@
 import { useState } from "react";
 import { Note } from "../../type";
+import {
+  getDatabase,
+  ref,
+  child,
+  get,
+  set,
+  push,
+  update,
+} from "firebase/database";
 
 export default function NoteComponent({
   notes,
@@ -18,6 +27,44 @@ export default function NoteComponent({
   const [upTagline, setTagLine] = useState(tagline);
   const [upBody, setBody] = useState(body);
   const [upIsPinned, setIsPinned] = useState(isPinned);
+
+  function writeNewNote({
+    id,
+    title,
+    body,
+    tagline,
+    isPinned,
+    updatedAt,
+    createdAt,
+  }: Note) {
+    const db = getDatabase();
+
+    // A note entry.
+    const noteData = {
+      id: id,
+      title: title,
+      body: body,
+      tagline: tagline,
+      isPinned: isPinned,
+      updatedAt: updatedAt,
+      createdAt: createdAt,
+    };
+
+    // Get a key for a new Note.
+    const noteRef = ref(db, `/notes/${id}`);
+    get(noteRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        // Note exists, update it
+        set(noteRef, noteData); // Overwrite the existing note
+      } else {
+        // Note doesn't exist, create a new one
+        const newNoteKey = push(child(ref(db), "notes")).key;
+        const updates = {};
+        updates[`/notes/${newNoteKey}`] = noteData;
+        update(ref(db), updates);
+      }
+    });
+  }
 
   return (
     <div>
@@ -161,10 +208,21 @@ export default function NoteComponent({
                 setNotes(
                   notes.filter((note) => note.id != id).concat(updatedNote)
                 );
+                writeNewNote(updatedNote);
                 setDisplay(true);
               }}
             >
               Update Note
+            </button>
+            <button
+              className="bg-red-500 hover:bg-red-700 pl-5 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              onClick={() => {
+                setNotes(notes.filter((note) => note.id != id));
+
+                setDisplay(true);
+              }}
+            >
+              Delete Note
             </button>
           </form>
         </div>

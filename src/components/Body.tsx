@@ -3,11 +3,11 @@ import NoteComponent from "./NoteComponent.tsx";
 
 import { Note } from "../../type.ts";
 
-import { Dispatch, useState, useReducer, useEffect } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import Pagination from "./Pagination.tsx";
 
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
+import { getDatabase, ref, child, get } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDakBjopCjwbPK06EnbYm_blWObjJHa9e8",
@@ -31,13 +31,42 @@ type Props = {
 };
 
 export default function Body({ formVisible, setFormVisibility }: Props) {
-  function useForceUpdate() {
-    const [value, setValue] = useState(0); // integer state
-    return () => setValue((value) => value + 1);
-  }
-  const forceUpdate = useForceUpdate();
   const [currentPage, setCurrentPage] = useState(0);
   const [Notes, setNotes] = useState<Array<Note>>([]);
+  const [fetchedNotes, setFetchedNotes] = useState<Array<Note>>([]);
+
+  const dbRef = ref(getDatabase());
+  get(child(dbRef, `notes`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        snapshot.forEach((element) => {
+          const child = element.val();
+
+          // Check if child.id already exists in fetchedNotes
+          if (!fetchedNotes.some((note) => note.id === child.id)) {
+            setFetchedNotes((prevNotes) => [...prevNotes, child]);
+          }
+        });
+      } else {
+        console.log("No data available");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  useEffect(() => {
+    const uniqueNotes: Array<Note> = [];
+
+    fetchedNotes.forEach((note) => {
+      // Use .some() to check if the note already exists in uniqueNotes
+      if (!uniqueNotes.some((uniqueNote) => uniqueNote.id === note.id)) {
+        uniqueNotes.push(note); // Use push to add new notes
+      }
+    });
+
+    setNotes((prevNotes) => [...prevNotes, ...uniqueNotes]); // Append unique notes
+  }, [fetchedNotes]);
+
   const currentNotes = Notes.filter((note) => note.isPinned)
     .sort((note) => note.updatedAt)
     .concat(

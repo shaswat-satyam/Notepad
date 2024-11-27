@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Note } from "../../type";
+import { getDatabase, ref, set, push, child } from "firebase/database";
 
 type Props = {
   setFormVisibility: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,6 +15,30 @@ export default function Form({ setFormVisibility, setNotes, notes }: Props) {
   const [tagline, setTagLine] = useState("");
   const [body, setBody] = useState("");
   const [isPinned, setIsPinned] = useState(false);
+
+  function writeNoteData({
+    id,
+    title,
+    body,
+    tagline,
+    isPinned,
+    updatedAt,
+    createdAt,
+  }: Note) {
+    const db = getDatabase();
+
+    const newNoteKey = id;
+    set(ref(db, "notes/" + newNoteKey), {
+      id: id,
+      title: title,
+      body: body,
+      tagline: tagline,
+      isPinned: isPinned,
+      updatedAt: updatedAt,
+      createdAt: createdAt,
+    });
+  }
+
   return (
     <div className="w-screen h-screen bg-black bg-opacity-30 fixed top-0 right-0 flex align-middle justify-center">
       <form className="max-w-md fixed mx-auto w-11/12 h-2/3 mt-20 p-6 bg-white border rounded-lg shadow-lg">
@@ -105,18 +130,17 @@ export default function Form({ setFormVisibility, setNotes, notes }: Props) {
           onClick={(e) => {
             e.preventDefault();
             setFormVisibility(false);
-            setNotes([
-              ...notes,
-              {
-                id: uniqueId("note"),
-                title: title,
-                tagline: tagline,
-                body: body,
-                isPinned: isPinned,
-                updatedAt: Date.now(),
-                createdAt: Date.now(),
-              },
-            ]);
+            const newNote = {
+              id: uniqueId("note"),
+              title: title,
+              tagline: tagline,
+              body: body,
+              isPinned: isPinned,
+              updatedAt: Date.now(),
+              createdAt: Date.now(),
+            };
+            setNotes([...notes, newNote]);
+            writeNoteData(newNote);
           }}
         >
           Submit
