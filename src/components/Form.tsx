@@ -6,6 +6,8 @@ type Props = {
   setNotes: React.Dispatch<React.SetStateAction<Array<Note>>>;
   notes: Array<Note>;
 };
+const uniqueId = (prefix = "id-") =>
+  prefix + Math.random().toString(16).slice(-4);
 
 export default function Form({ setFormVisibility, setNotes, notes }: Props) {
   const [title, setTitle] = useState("");
@@ -106,6 +108,7 @@ export default function Form({ setFormVisibility, setNotes, notes }: Props) {
             setNotes([
               ...notes,
               {
+                id: uniqueId("note"),
                 title: title,
                 tagline: tagline,
                 body: body,

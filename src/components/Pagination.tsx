@@ -35,7 +35,7 @@ export default function Pagination({
             </svg>
           </a>
 
-          {[...Array(pageCount)].map((x, i) => (
+          {[...Array(pageCount)].map((_, i) => (
             <a
               href=""
               className={
