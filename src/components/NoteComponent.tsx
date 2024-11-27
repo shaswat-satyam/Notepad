@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Note } from "../../type";
 import {
   getDatabase,
@@ -10,6 +10,18 @@ import {
   update,
 } from "firebase/database";
 
+interface PropType {
+  notes: Array<Note>;
+  setNotes: React.Dispatch<React.SetStateAction<Array<Note>>>;
+  id: string;
+  title: string;
+  tagline: string;
+  body: string;
+  isPinned: boolean;
+  updatedAt: EpochTimeStamp;
+  createdAt: EpochTimeStamp;
+}
+
 export default function NoteComponent({
   notes,
   setNotes,
@@ -20,7 +32,7 @@ export default function NoteComponent({
   isPinned,
   updatedAt,
   createdAt,
-}: Note & Array<Note> & React.Dispatch<React.SetStateAction<Array<Note>>>) {
+}: PropType) {
   const [isDisplay, setDisplay] = useState(true);
 
   const [upTitle, setTitle] = useState(title);
@@ -59,7 +71,7 @@ export default function NoteComponent({
       } else {
         // Note doesn't exist, create a new one
         const newNoteKey = push(child(ref(db), "notes")).key;
-        const updates = {};
+        const updates: Record<string, Note> = {};
         updates[`/notes/${newNoteKey}`] = noteData;
         update(ref(db), updates);
       }
@@ -91,9 +103,8 @@ export default function NoteComponent({
         </div>
         <div className="flex justify-between gap-5 text-gray-500">
           {tagline ? <h4>{tagline}</h4> : <></>}
-          <h4>{Date(updatedAt)}</h4>
-
-          <h4>{Date(createdAt)}</h4>
+          <h4>{new Date(updatedAt).toLocaleString()}</h4>
+          <h4>{new Date(createdAt).toLocaleString()}</h4>
         </div>
         <p className="">{body}</p>
       </div>
@@ -199,14 +210,18 @@ export default function NoteComponent({
               type="submit"
               onClick={(e) => {
                 e.preventDefault();
-                const updatedNote = notes.filter((note) => note.id === id)[0];
+                const updatedNote = notes.filter(
+                  (note: Note) => note.id === id
+                )[0];
                 updatedNote.title = upTitle;
                 updatedNote.tagline = upTagline;
                 updatedNote.body = upBody;
                 updatedNote.isPinned = upIsPinned;
                 updatedNote.updatedAt = Date.now();
                 setNotes(
-                  notes.filter((note) => note.id != id).concat(updatedNote)
+                  notes
+                    .filter((note: Note) => note.id != id)
+                    .concat(updatedNote)
                 );
                 writeNewNote(updatedNote);
                 setDisplay(true);
@@ -217,7 +232,7 @@ export default function NoteComponent({
             <button
               className="bg-red-500 hover:bg-red-700 pl-5 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               onClick={() => {
-                setNotes(notes.filter((note) => note.id != id));
+                setNotes(notes.filter((note: Note) => note.id != id));
 
                 setDisplay(true);
               }}

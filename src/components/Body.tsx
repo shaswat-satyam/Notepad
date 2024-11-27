@@ -1,33 +1,15 @@
 import Form from "./Form.tsx";
 import NoteComponent from "./NoteComponent.tsx";
+import Pagination from "./Pagination.tsx";
 
 import { Note } from "../../type.ts";
 
-import { Dispatch, useEffect, useState } from "react";
-import Pagination from "./Pagination.tsx";
-
-import { initializeApp } from "firebase/app";
+import { useEffect, useState } from "react";
 import { getDatabase, ref, child, get } from "firebase/database";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDakBjopCjwbPK06EnbYm_blWObjJHa9e8",
-  authDomain: "notepad-82c2e.firebaseapp.com",
-  projectId: "notepad-82c2e",
-  storageBucket: "notepad-82c2e.firebasestorage.app",
-  messagingSenderId: "350688169353",
-  appId: "1:350688169353:web:f9563a6c1561454bd56558",
-  measurementId: "G-2VLFBPVNBY",
-  databaseURL:
-    "https://notepad-82c2e-default-rtdb.asia-southeast1.firebasedatabase.app/",
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
 
 type Props = {
   formVisible: boolean;
-  setFormVisibility: Dispatch<React.SetStateAction<boolean>>;
+  setFormVisibility: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Body({ formVisible, setFormVisibility }: Props) {

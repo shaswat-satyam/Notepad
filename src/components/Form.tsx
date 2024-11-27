@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Note } from "../../type";
-import { getDatabase, ref, set, push, child } from "firebase/database";
+import { getDatabase, ref, set } from "firebase/database";
 
 type Props = {
   setFormVisibility: React.Dispatch<React.SetStateAction<boolean>>;
