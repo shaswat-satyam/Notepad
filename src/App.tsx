@@ -1,6 +1,6 @@
 import Heading from "./components/Heading";
 import Body from "./components/Body";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
@@ -15,7 +15,9 @@ const firebaseConfig = {
     "https://notepad-82c2e-default-rtdb.asia-southeast1.firebasedatabase.app/",
 };
 function App() {
-  initializeApp(firebaseConfig);
+  useEffect(() => {
+    initializeApp(firebaseConfig);
+  }, []);
   const [isFormVisible, setFormVisibility] = useState<boolean>(false);
   return (
     <>
